@@ -21,5 +21,6 @@ class Cars extends Model
         'vin',
         'description',
         'imageURL',
+        'branchID',
     ];
 }
