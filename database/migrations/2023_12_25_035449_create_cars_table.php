@@ -12,8 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cars', function (Blueprint $table) {
-            $table->id();
+            $table->id('carID');
+            $table->string('manufacturer');
+            $table->string('model');
+            $table->double('price');
+            $table->string('vin');
+            $table->string('description');
+            $table->string('imageURL');
             $table->timestamps();
+        });
+        Schema::table('cars', function (Blueprint $table) {
+            $table->unsignedBigInteger('branchID');
+         
+            $table->foreign('branchID')->references('branchID')->on('branch');
         });
     }
 
