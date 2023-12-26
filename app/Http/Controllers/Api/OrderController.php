@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OrderUpdateRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\OrderRequest;
 use App\Models\Order;
@@ -20,7 +21,6 @@ class OrderController extends Controller
     }
 
     
-
     /**
      * Store a newly created resource in storage.
      */
@@ -37,14 +37,18 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(OrderRequest $request, string $id)
+    public function update(OrderUpdateRequest $request, string $id)
     {
-        $validated = $request->validated();
-        
         $order = Order::findOrFail($id);
-        $order->update($validated);
+    
+        $validated = $request->validated();
  
-         return $order;
+        $order->quantity = $validated['quantity'];
+        $order->payment_method = $validated['payment_method'];
+
+        $order->save();
+
+        return $order;
     }
 
     /**
@@ -52,7 +56,7 @@ class OrderController extends Controller
      */
     public function destroy(string $id)
     {
-        $order = OrderController::findorfail($id);
+        $order = Order::findorfail($id);
 
         $order->delete();
 

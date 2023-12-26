@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BranchController;
 use App\Http\Controllers\Api\CarsController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -57,5 +58,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/user/password/{id}',       'password');
         // Route::put('/user/image/{id}',          'image');
         Route::delete('/user/{id}',             'destroy');
+    });
+
+    Route::controller(OrderController::class)->group(function(){
+        Route::get('/order',                    'index');
+        Route::post('/order',                   'store');
+        Route::put('/order/{id}',              'update');
+        Route::delete('order/{id}',            'destroy');
+
     });
 });
