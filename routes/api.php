@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CarsController;
 use App\Http\Controllers\Api\BranchController;
+use App\Http\Controllers\Api\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,12 @@ Route::controller(BranchController::class)->group(function () {
     Route::post('/branch',            'store');
     Route::put('/branch/{id}',        'update');
     Route::delete('/branch/{id}',     'destroy');
+});
+
+Route::controller(UserController::class)->group(function () {
+    Route::post('/usesr',                 'store');
+    Route::put('/users/{id}',             'update');
+    Route::delete('/users/{id}',          'destroy' );
 });
 
 
