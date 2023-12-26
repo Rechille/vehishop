@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\OrderDetailsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -66,5 +68,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/order/{id}',              'update');
         Route::delete('order/{id}',            'destroy');
 
+    });
+
+    Route::controller(OrderDetailsController::class)->group(function(){
+        Route::get('/orderdetails',             'index');
+
+    });
+
+    Route::controller(InventoryController::class)->group(function(){
+        Route::get('inventory',                 'index');
+        Route::post('inventory',                'store');
     });
 });
