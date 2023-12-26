@@ -30,6 +30,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route::get('/branch', [BranchController::class, 'index']);
 // Route::get('/branch/{id}', [BranchController::class, 'show']);
 
+
+
 //Public API's
 Route::get('/cars', [CarsController::class, 'index']);
 Route::get('/cars/{id}', [CarsController::class, 'show']);
@@ -53,7 +55,16 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/usesr',                 'store');
     Route::put('/users/{id}',             'update');
     Route::delete('/users/{id}',          'destroy' );
+    Route::put('/user/{id}',            'update')->name('user.update');
+    Route::put('/user/email/{id}',      'email')->name('user.email');
+    Route::put('/user/password/{id}',   'password')->name('user.password');
+    Route::put('/user/image/{id}',   'image')->name('user.image');
 });
+
+//  //User Specific API's
+//  Route::put('/profile/image', [ProfileController::class, 'image'])->name('profile.image');
+//  Route::get('/profile/show', [ProfileController::class, 'show']);
+
 
 
 
