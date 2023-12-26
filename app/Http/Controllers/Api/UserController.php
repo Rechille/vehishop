@@ -3,7 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\AddressUserRequest;
+use App\Http\Requests\PasswordUserRequest;
+use App\Http\Requests\PhoneUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\EmailUserRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -20,57 +25,24 @@ class UserController extends Controller
         return User::all();
     }
 
-   
+
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-    $validated = $request->validated();
-
-    $user = User::create($validated);
-
-    return $user;
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        return User::findorfail($id);
-    }
-
-    
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UserRequest $request, string $id)
+    public function store(StoreUserRequest $request)
     {
         $validated = $request->validated();
-        
-       $user = User::findOrFail($id);
-       $user->update($validated);
+
+        $validated['password'] = Hash::make($validated['password']);
+
+        $user = User::create($validated);
 
         return $user;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $user = UserController::findorfail($id);
 
-        $user->delete();
-
-        return $user;
-    }
-
-    /**
-     * Update the email of specified resource in storage.
-     */
-    public function email(UserRequest $request, string $id)
+    //email
+    public function email(EmailUserRequest $request, string $id)
     {
         $user = User::findOrFail($id);
 
@@ -83,42 +55,7 @@ class UserController extends Controller
         return $user;
     }
 
-      /**
-     * Update the phone nummber of the specified resource in storage.
-     */
-    public function phone_number(UserRequest $request, string $id)
-    {
-        $user = User::findOrFail($id);
-
-        $validated = $request->validated();
- 
-        $user->phone_number = $validated['phone_number'];
-
-        $user->save();
-
-        return $user;
-    }
-
-     /**
-     * Update the address of the specified resource in storage.
-     */
-    public function address(UserRequest $request, string $id)
-    {
-        $user = User::findOrFail($id);
-
-        $validated = $request->validated();
- 
-        $user->address = $validated['address'];
-
-        $user->save();
-
-        return $user;
-    }
-
-    /**
-     * Update the password of the specified resource in storage.
-     */
-    public function password(UserRequest $request, string $id)
+    public function password (PasswordUserRequest $request, string $id)
     {
         $user = User::findOrFail($id);
 
@@ -130,5 +67,74 @@ class UserController extends Controller
 
         return $user;
     }
+
+    public function phone_number(PhoneUserRequest $request, string $id)
+    {
+        $user = User::findOrFail($id);
+
+        $validated = $request->validated();
+ 
+        $user->phone_number = $validated['phone_number'];
+
+        $user->save();
+
+        return $user;
+    }
+    public function address(AddressUserRequest $request, string $id)
+    {
+        $user = User::findOrFail($id);
+
+         $validated = $request->validated();
+
+        $user->address = $validated['address'];
+
+        $user->save();
+
+        return $user;
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        return User::findorfail($id);
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateUserRequest $request, string $id)
+    {
+    
+        
+            $user = User::findOrFail($id);
+    
+            $validated = $request->validated();
+     
+            $user->firstname = $validated['firstname'];
+            $user->lastname = $validated['lastname'];
+    
+            $user->save();
+    
+            return $user;
+
+    }
+
+    
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $user = User::findorfail($id);
+
+        $user->delete();
+
+        return $user;
+    }
+
 
 }
