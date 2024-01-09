@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BranchController;
 use App\Http\Controllers\Api\CarsController;
-use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\CarSpecificController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\UserController;
@@ -34,13 +34,14 @@ Route::get('/branch/{id}', [BranchController::class, 'show']);
 
 //Private API's
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
+Route::get('/logout', [AuthController::class, 'logout']);
 
 
 //Admin API's
     Route::controller(CarsController::class)->group(function () {
         Route::post('/cars',            'store');
         Route::put('/cars/{id}',        'update');
+        Route::put('/cars/image/{id}',  'image');
         Route::delete('/cars/{id}',     'destroy');
     });
 
@@ -58,7 +59,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/user/phone/{id}',          'phone_number');
         Route::put('/user/address/{id}',        'address');
         Route::put('/user/password/{id}',       'password');
-        // Route::put('/user/image/{id}',          'image');
+        Route::put('/user/image/{id}',          'image');
         Route::delete('/user/{id}',             'destroy');
     });
 
@@ -78,5 +79,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(InventoryController::class)->group(function(){
         Route::get('inventory',                 'index');
         Route::post('inventory',                'store');
+    });
+
+    //user specific
+
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('/profile/show',                     'show');
+        Route::put('/profile/image',                     'image')->name('profile.image');
+    });
+
+    //CarSpecific
+
+    Route::controller(CarSpecificController::class)->group(function () {
+        Route::get('/car/profile/show',                     'show');
+        //Route::put('/profile/image',                     'image')->name('profile.image');
     });
 });

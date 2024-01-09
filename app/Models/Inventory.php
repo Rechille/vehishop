@@ -22,7 +22,7 @@ class Inventory extends Model
     ];
 
     protected $casts = [
-        'date' => 'datetime',
+        'arrival_date' => 'datetime',
 
     ];
 

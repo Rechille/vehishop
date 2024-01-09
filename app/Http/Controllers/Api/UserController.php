@@ -9,6 +9,7 @@ use App\Http\Requests\PhoneUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\EmailUserRequest;
+use App\Http\Requests\UserImageRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -115,6 +116,8 @@ class UserController extends Controller
      
             $user->firstname = $validated['firstname'];
             $user->lastname = $validated['lastname'];
+            $user->middlename = $validated['middlename'];
+
     
             $user->save();
     
@@ -137,4 +140,18 @@ class UserController extends Controller
     }
 
 
+    public function image(UserImageRequest $request, string $id)
+    {
+        $user = User::findOrFail($id);
+
+        if(!is_null($user->image))
+        {
+            Storage::disk('public')->delete($user->image);
+        }
+        $user->image = $request->file('image')->storePublicly('images', 'public');
+        
+        $user->save();
+
+        return $user;
+    }
 }

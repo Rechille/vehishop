@@ -23,13 +23,14 @@ class StoreUserRequest extends FormRequest
     {
 
         return [
-            'lastname' => 'required|string|max:255',
-            'firstname' => 'required|string|max:255',
-            'middlename' => 'string|max:255',
-            'email' => 'required|string|email|unique:App\Models\User,email|max:255',
-            'phone_number' => 'required|digits_between:11,12',
-            'address' => 'required|string|max:255',
-            'password' => 'required|min:8',
+                'lastname'               => 'required|string|max:255',
+                'firstname'              => 'required|string|max:255',
+                'middlename'             => 'string|max:255',
+                'email'                  => 'required|string|email|unique:App\Models\User,email|max:255',
+                'phone_number'           => 'required|digits_between:11,12|unique:App\Models\User,phone_number',
+                'address'                => 'required|string|max:255',
+                'password'               => 'required|min:8|confirmed',
+                'role'                   => 'nullable|string',
         ];
 
     }

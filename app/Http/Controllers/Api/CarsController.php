@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Cars;
 use App\Http\Requests\CarRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 
@@ -29,26 +30,15 @@ class CarsController extends Controller
 
     $validated = $request->validated();
 
+    $validated['imageURL'] = $request->file('imageURL')->storePublicly('cars', 'public');
+    
+
     $cars = Cars::create($validated);
+
 
     return $cars;
    }
     
-    //  {
-    //         $cars = Cars::create([
-    //             'manufacturer' => $request->manufacturer,
-    //             'model' => $request->model,
-    //             'price' => $request->price,
-    //             'vin' => $request->vin,
-    //             'description' => $request->description,
-    //             'imageURL' => $request->imageURL,
-    //             'branchID' => $request->branchID,   
-    //         ]);
-
-    //         return $cars;
-    //     }
-    
-
     /**
      * Display the specified resource.
      */
@@ -80,6 +70,23 @@ class CarsController extends Controller
             return $cars;
             
         }
+
+    public function image(CarRequest $request, string $id)
+
+        {
+            $cars = Cars::findOrFail($id);
+    
+            if(!is_null($cars->imageURL))
+            {
+                Storage::disk('public')->delete($cars->imageURL);
+            }
+            
+            $cars->imageURL = $request->file('imageURL')->storePublicly('cars', 'public');
+            
+            $cars->save();
+    
+            return $cars;
+        }
     
 
     /**
@@ -87,10 +94,14 @@ class CarsController extends Controller
      */
     public function destroy(string $id)
     {
-        $cars = Cars::findorfail($id);
+        $cars = Cars::findOrFail($id);
+
+        if(!is_null($cars->imageURL))
+        {
+            Storage::disk('public')->delete($cars->imageURL);
+        }
 
         $cars->delete();
-
         return $cars;
     }
 }

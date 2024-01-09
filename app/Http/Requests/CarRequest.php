@@ -22,13 +22,13 @@ class CarRequest extends FormRequest
     public function rules() : array
     {
         return [
-            'manufacturer' => 'required|string|max:255',
-            'model' => 'required|string|max:255',
-            'price' => 'numeric|required',
-            'vin' => 'string|max:17|required|min:17',
-            'description' => 'string|max:255|required',
-            'imageURL' => 'required|string',
-            'branchID' => 'required|integer',
+                'manufacturer'          => 'required|string|max:255',
+                'model'             => 'required|string|max:255',
+                'price'             => 'required|numeric',
+                'vin'               => 'required|string|max:17|min:17',
+                'imageURL'          => 'required|image|unique:App\Models\Cars,imageURL|mimes:jpg,gif,png|max:2048',
+                'description'       => 'required|string|max:255',
+                'branchID'         =>  'required|integer',
         ];
     }
 }
